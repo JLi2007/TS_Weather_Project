@@ -2,7 +2,7 @@
   "compilerOptions": {
     "moduleResolution": "node",
     "target": "es6",
-    "module": "esnext",
+    "module": "commonjs",
     "outDir": "./build",
     "rootDir": "./",
     "strict": true,

@@ -7,7 +7,7 @@
 }
 
 body{
-    background: url(../images/Weather.jpg);
+    background: url(../public/Weather.jpg);
     overflow: hidden;
 }
 
