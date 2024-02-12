@@ -8,6 +8,14 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 var _a;
+let previousMarker = null;
+const map = L.map('Map', { zoomControl: false, minZoom: 1.1 }).setView([0, 0], 5);
+document.addEventListener('DOMContentLoaded', () => {
+    const attribution = '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors';
+    const tileURL = 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
+    const tiles = L.tileLayer(tileURL, { attribution });
+    tiles.addTo(map);
+});
 (_a = document.getElementById('submit')) === null || _a === void 0 ? void 0 : _a.addEventListener('click', (event) => __awaiter(void 0, void 0, void 0, function* () {
     event.preventDefault();
     const data = ['hi', 'iam', 'good'];
