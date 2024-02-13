@@ -9,11 +9,11 @@
     "esModuleInterop": true,
     "lib": ["es2015", "dom"],
     "allowUmdGlobalAccess": true,
+    // "allowImportingTsExtensions": true,
   },
   "types": ["node", "express"],
   "include": [
     "**/*.ts",
-    "**/*.html"
   ],
-  "exclude": ["client/build/node_modules"]
+  "exclude": ["node_modules"]
 }

@@ -8,6 +8,8 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 var _a;
+import countries from './countries.js';
+// import * as L from 'leaflet';
 let previousMarker = null;
 const map = L.map('Map', { zoomControl: false, minZoom: 1.1 }).setView([0, 0], 5);
 document.addEventListener('DOMContentLoaded', () => {
@@ -15,6 +17,14 @@ document.addEventListener('DOMContentLoaded', () => {
     const tileURL = 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
     const tiles = L.tileLayer(tileURL, { attribution });
     tiles.addTo(map);
+});
+const selects = document.querySelectorAll("select");
+selects.forEach((select, index) => {
+    for (let country_code in countries) {
+        let selected = index === 0 && country_code === "QS" ? "selected" : "";
+        let option = `<option ${selected} value="${country_code}">${countries[country_code]}</option>`;
+        select.insertAdjacentHTML("beforeend", option);
+    }
 });
 (_a = document.getElementById('submit')) === null || _a === void 0 ? void 0 : _a.addEventListener('click', (event) => __awaiter(void 0, void 0, void 0, function* () {
     event.preventDefault();
@@ -30,4 +40,3 @@ document.addEventListener('DOMContentLoaded', () => {
     const json = yield fetching.json();
     console.log(json);
 }));
-export {};
