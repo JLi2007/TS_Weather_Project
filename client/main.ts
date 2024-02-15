@@ -74,9 +74,50 @@ document.getElementById('submit')?.addEventListener('click', async(event)=>{
 
 
 function DisplayWeather(data:any){
-    console.log(data);
+    const output: HTMLSelectElement | null = document.querySelector('.output');
+    const cityID: string = (document.querySelector('#inputs') as HTMLInputElement)?.value;
+    const countryID: string = (document.getElementById('country')as HTMLInputElement)?.value; 
+
+    const city: HTMLHeadingElement = document.createElement('h1');
+    const flag: HTMLImageElement = document.createElement('img');
+    const temp: HTMLHeadingElement = document.createElement('h1');
+    const main: HTMLHeadingElement = document.createElement('h2');
+    const icon: HTMLImageElement = document.createElement('img');
+    const minmax: HTMLHeadingElement = document.createElement('h4');
+    const roots: HTMLDivElement = document.createElement('div');
+    const cityContainer: HTMLDivElement = document.createElement('div');
+    const mainContainer: HTMLDivElement = document.createElement('div');
+
+    city.textContent = `${cityID?.toUpperCase()}`;
+    temp.textContent = `Temperature : ${data.main.temp} °C`;
+
+    if (countryID !== "QS") {
+        flag.src = `https://flagsapi.com/${countryID}/shiny/64.png`;
+    }
+    main.textContent = `${data.weather[0].main} ⟶ ${data.weather[0].description}`;
+    icon.src = `https://openweathermap.org/img/w/${data.weather[0].icon}.png`;
+    minmax.textContent = `MIN: ${data.main.temp_min} °C ||| MAX: ${data.main.temp_max} °C`;
+
+    city.classList.add('city-class');
+    flag.classList.add('flag-class');
+    temp.classList.add('temp-class');
+    main.classList.add('main-class');
+    icon.classList.add('icon-class');
+    minmax.classList.add('min-class');
+    roots.classList.add('roots-class');
+    cityContainer.classList.add('city-container');
+    mainContainer.classList.add('main-container');
+
+    cityContainer.append(flag, city);
+    mainContainer.append(temp, main, minmax);
+    roots.append(cityContainer, mainContainer, icon);
+    if (output) {
+        output.innerHTML = '';
+        output.appendChild(roots);
+    }
+
 }
 
-function ObtainCoords(){
+function ObtainCoords(data:any){
     console.log('obese')
 }

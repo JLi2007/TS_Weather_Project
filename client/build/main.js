@@ -73,8 +73,44 @@ selects.forEach((select, index) => {
     }
 }));
 function DisplayWeather(data) {
-    console.log(data);
+    var _a, _b;
+    const output = document.querySelector('.output');
+    const cityID = (_a = document.querySelector('#inputs')) === null || _a === void 0 ? void 0 : _a.value;
+    const countryID = (_b = document.getElementById('country')) === null || _b === void 0 ? void 0 : _b.value;
+    const city = document.createElement('h1');
+    const flag = document.createElement('img');
+    const temp = document.createElement('h1');
+    const main = document.createElement('h2');
+    const icon = document.createElement('img');
+    const minmax = document.createElement('h4');
+    const roots = document.createElement('div');
+    const cityContainer = document.createElement('div');
+    const mainContainer = document.createElement('div');
+    city.textContent = `${cityID === null || cityID === void 0 ? void 0 : cityID.toUpperCase()}`;
+    temp.textContent = `Temperature : ${data.main.temp} °C`;
+    if (countryID !== "QS") {
+        flag.src = `https://flagsapi.com/${countryID}/shiny/64.png`;
+    }
+    main.textContent = `${data.weather[0].main} ⟶ ${data.weather[0].description}`;
+    icon.src = `https://openweathermap.org/img/w/${data.weather[0].icon}.png`;
+    minmax.textContent = `MIN: ${data.main.temp_min} °C ||| MAX: ${data.main.temp_max} °C`;
+    city.classList.add('city-class');
+    flag.classList.add('flag-class');
+    temp.classList.add('temp-class');
+    main.classList.add('main-class');
+    icon.classList.add('icon-class');
+    minmax.classList.add('min-class');
+    roots.classList.add('roots-class');
+    cityContainer.classList.add('city-container');
+    mainContainer.classList.add('main-container');
+    cityContainer.append(flag, city);
+    mainContainer.append(temp, main, minmax);
+    roots.append(cityContainer, mainContainer, icon);
+    if (output) {
+        output.innerHTML = '';
+        output.appendChild(roots);
+    }
 }
-function ObtainCoords() {
+function ObtainCoords(data) {
     console.log('obese');
 }
