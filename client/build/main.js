@@ -34,6 +34,7 @@ selects.forEach((select, index) => {
     const countryID = (_c = document.getElementById('country')) === null || _c === void 0 ? void 0 : _c.value;
     if (cityID && countryID) {
         const data = { cityID, countryID };
+        // console.log({cityID, countryID});
         const options = {
             method: 'POST',
             headers: {
@@ -49,16 +50,17 @@ selects.forEach((select, index) => {
             }
             const json = yield fetching.json();
             console.log(json);
-            // DisplayWeather(json.data.weatherData);
-            const fetching2 = yield fetch('/location', options2);
-            if (!fetching2.ok) {
-                throw new Error(`HTTP ERROR Status:${fetching.status}`);
-            }
-            const json2 = yield fetching2.json();
+            DisplayWeather(json.data.weatherData);
+            // const fetching2 = await fetch('/location', options2);
+            // if (!fetching2.ok) {
+            //     throw new Error(`HTTP ERROR Status:${fetching.status}`);
+            // }
+            // const json2 = await fetching2.json();
+            // console.log(json2);
             // ObtainCoords(json2.data.locationData[0]);
         }
         catch (e) {
-            console.log('Error in fetch GERE:', e);
+            console.log('Error in fetch:', e);
             const output = document.querySelector('.output');
             if (output) {
                 const err = document.createElement('p');
@@ -70,8 +72,8 @@ selects.forEach((select, index) => {
         }
     }
 }));
-function DisplayWeather() {
-    console.log('unfinished');
+function DisplayWeather(data) {
+    console.log(data);
 }
 function ObtainCoords() {
     console.log('obese');

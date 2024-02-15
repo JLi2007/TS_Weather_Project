@@ -30,6 +30,7 @@ document.getElementById('submit')?.addEventListener('click', async(event)=>{
 
     if (cityID && countryID){
         const data : {cityID:string; countryID:string} = {cityID , countryID};
+        // console.log({cityID, countryID});
         const options: RequestInit = {
             method: 'POST',
             headers: {
@@ -47,14 +48,15 @@ document.getElementById('submit')?.addEventListener('click', async(event)=>{
 
             const json = await fetching.json();
             console.log(json);
-            // DisplayWeather(json.data.weatherData);
+            DisplayWeather(json.data.weatherData);
 
-            const fetching2 = await fetch('/location', options2);
-            if (!fetching2.ok) {
-                throw new Error(`HTTP ERROR Status:${fetching.status}`);
-            }
+            // const fetching2 = await fetch('/location', options2);
+            // if (!fetching2.ok) {
+            //     throw new Error(`HTTP ERROR Status:${fetching.status}`);
+            // }
 
-            const json2 = await fetching2.json();
+            // const json2 = await fetching2.json();
+            // console.log(json2);
             // ObtainCoords(json2.data.locationData[0]);
         }catch(e){
             console.log('Error in fetch:', e);
@@ -71,8 +73,8 @@ document.getElementById('submit')?.addEventListener('click', async(event)=>{
 }});
 
 
-function DisplayWeather(){
-    console.log('unfinished')
+function DisplayWeather(data:any){
+    console.log(data);
 }
 
 function ObtainCoords(){

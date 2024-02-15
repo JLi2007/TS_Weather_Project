@@ -13,6 +13,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
+const axios_1 = __importDefault(require("axios"));
 const dotenv_1 = __importDefault(require("dotenv"));
 dotenv_1.default.config();
 const app = (0, express_1.default)();
@@ -22,6 +23,33 @@ app.use(express_1.default.json({ limit: '2mb' }));
 app.listen(port, () => console.log(`running on port ${port}`));
 app.post('/weather', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     console.log('request received!');
-    const data = req.body;
-    res.send(data);
+    // const data = req.body;
+    // res.send(data);
+    const { lat, lon, cityID, countryID } = req.body;
+    // res.send(lat);
+    if ((lat === undefined || lon === undefined) &&
+        (cityID === undefined || cityID === "" || cityID === null)) {
+        const errorResponse = { success: false, message: "You put nothing...", data: { invalidCityID: cityID } };
+        return res.status(400).json(errorResponse);
+    }
+    try {
+        let url;
+        const key = process.env.API_KEY;
+        console.log(key);
+        const cityValue = encodeURIComponent(cityID);
+        if (countryID === "QS") {
+            url = `https://api.openweathermap.org/data/2.5/weather?q=${cityValue}&appid=${key}&units=metric`;
+        }
+        else {
+            url = `https://api.openweathermap.org/data/2.5/weather?q=${cityValue},${countryID}&appid=${key}&units=metric`;
+        }
+        const response = yield axios_1.default.get(url);
+        const weatherData = response.data;
+        const successResponse = { success: true, message: "Server received your response", data: { weatherData } };
+        return res.json(successResponse);
+    }
+    catch (e) {
+        const errorResponse = { success: false, message: "Enter a valid city" };
+        return res.status(400).json(errorResponse);
+    }
 }));

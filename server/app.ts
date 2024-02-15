@@ -24,4 +24,23 @@ app.post('/weather', async(req:Request, res:Response) => {
         const errorResponse = { success: false, message: "You put nothing...", data: { invalidCityID: cityID } };
         return res.status(400).json(errorResponse);
     }
+
+    try{
+        let url:string;
+        const key:string | undefined = process.env.API_KEY;
+        const cityValue: string = encodeURIComponent(cityID);
+        if (countryID === "QS"){
+            url = `https://api.openweathermap.org/data/2.5/weather?q=${cityValue}&appid=${key}&units=metric`;
+        } else {
+            url = `https://api.openweathermap.org/data/2.5/weather?q=${cityValue},${countryID}&appid=${key}&units=metric`;
+        }
+
+        const response = await axios.get(url);
+        const weatherData = response.data;
+        const successResponse = {success:true, message: "Server received your response", data:{weatherData}};
+        return res.json(successResponse);
+    }catch(e){
+        const errorResponse = { success: false, message: "Enter a valid city" };
+        return res.status(400).json(errorResponse);
+    }
 })
