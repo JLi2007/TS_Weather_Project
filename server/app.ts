@@ -44,3 +44,25 @@ app.post('/weather', async(req:Request, res:Response) => {
         return res.status(400).json(errorResponse);
     }
 })
+
+app.post('/location', async(req:Request, res:Response) => {
+    try{
+        let url:string;
+        const {cityID,countryID} = req.body;
+        const key:string | undefined = process.env.API_KEY;
+        //encodeURIComponent removes the whitespaces from cityID
+        const cityValue:string = encodeURIComponent(cityID);
+        if (countryID == "QS") {
+            url = `http://api.openweathermap.org/geo/1.0/direct?q=${cityValue}&limit=1&appid=${key}`
+        }else{
+            url = `http://api.openweathermap.org/geo/1.0/direct?q=${cityValue},${countryID}&limit=1&appid=${key}`
+        }
+        const response = await axios.get(url);
+        const locationData = response.data;
+        const successResponse = {success: true, message: "Server received your location response ...", data:{locationData}}
+        return res.json(successResponse);
+    }catch(e){
+        const errorResponse = {success: false, message: "Location did not work..."};
+        return res.status(400).json(errorResponse);
+    }
+})

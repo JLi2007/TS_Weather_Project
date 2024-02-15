@@ -51,13 +51,13 @@ selects.forEach((select, index) => {
             const json = yield fetching.json();
             console.log(json);
             DisplayWeather(json.data.weatherData);
-            // const fetching2 = await fetch('/location', options2);
-            // if (!fetching2.ok) {
-            //     throw new Error(`HTTP ERROR Status:${fetching.status}`);
-            // }
-            // const json2 = await fetching2.json();
-            // console.log(json2);
-            // ObtainCoords(json2.data.locationData[0]);
+            const fetching2 = yield fetch('/location', options2);
+            if (!fetching2.ok) {
+                throw new Error(`HTTP ERROR Status:${fetching.status}`);
+            }
+            const json2 = yield fetching2.json();
+            console.log(json2);
+            ObtainCoords(json2.data.locationData[0]);
         }
         catch (e) {
             console.log('Error in fetch:', e);
@@ -112,5 +112,22 @@ function DisplayWeather(data) {
     }
 }
 function ObtainCoords(data) {
-    console.log('obese');
+    const lat = data.lat;
+    const lon = data.lon;
+    AddMarker(lat, lon);
+}
+function AddMarker(lat, lon) {
+    console.log("Marker added at:", lat, lon);
+    const pinIcon = L.icon({
+        iconUrl: 'public/RedPin.png',
+        iconSize: [20, 30],
+        iconAnchor: [10, 30],
+    });
+    if (previousMarker) {
+        map.removeLayer(previousMarker);
+    }
+    const markerLatLng = L.latLng(lat, lon);
+    const marker = L.marker(markerLatLng, { icon: pinIcon }).addTo(map);
+    map.setView([lat, lon], map.getZoom());
+    previousMarker = marker;
 }

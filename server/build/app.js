@@ -26,7 +26,6 @@ app.post('/weather', (req, res) => __awaiter(void 0, void 0, void 0, function* (
     // const data = req.body;
     // res.send(data);
     const { lat, lon, cityID, countryID } = req.body;
-    // res.send(lat);
     if ((lat === undefined || lon === undefined) &&
         (cityID === undefined || cityID === "" || cityID === null)) {
         const errorResponse = { success: false, message: "You put nothing...", data: { invalidCityID: cityID } };
@@ -35,7 +34,6 @@ app.post('/weather', (req, res) => __awaiter(void 0, void 0, void 0, function* (
     try {
         let url;
         const key = process.env.API_KEY;
-        console.log(key);
         const cityValue = encodeURIComponent(cityID);
         if (countryID === "QS") {
             url = `https://api.openweathermap.org/data/2.5/weather?q=${cityValue}&appid=${key}&units=metric`;
@@ -50,6 +48,29 @@ app.post('/weather', (req, res) => __awaiter(void 0, void 0, void 0, function* (
     }
     catch (e) {
         const errorResponse = { success: false, message: "Enter a valid city" };
+        return res.status(400).json(errorResponse);
+    }
+}));
+app.post('/location', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        let url;
+        const { cityID, countryID } = req.body;
+        const key = process.env.API_KEY;
+        //encodeURIComponent removes the whitespaces from cityID
+        const cityValue = encodeURIComponent(cityID);
+        if (countryID == "QS") {
+            url = `http://api.openweathermap.org/geo/1.0/direct?q=${cityValue}&limit=1&appid=${key}`;
+        }
+        else {
+            url = `http://api.openweathermap.org/geo/1.0/direct?q=${cityValue},${countryID}&limit=1&appid=${key}`;
+        }
+        const response = yield axios_1.default.get(url);
+        const locationData = response.data;
+        const successResponse = { success: true, message: "Server received your location response ...", data: { locationData } };
+        return res.json(successResponse);
+    }
+    catch (e) {
+        const errorResponse = { success: false, message: "Location did not work..." };
         return res.status(400).json(errorResponse);
     }
 }));
